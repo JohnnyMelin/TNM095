@@ -2,13 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewBehaviourScript : MonoBehaviour
+public class FlockManager : MonoBehaviour
 {
+   
+
     public GameObject fishPrefab;
     public int numFish = 20;
     public GameObject[] allFish;
     public Vector3 swimLimits = new Vector3(10, 10, 10);
-    
+
+    [Header("Fish Settings")]
+    [Range(0.0f, 5.0f)]
+    public float minSpeed;
+    [Range(0.0f, 5.0f)]
+    public float maxSpeed;
+
     // Use this for initialization
     void Start()
     {
