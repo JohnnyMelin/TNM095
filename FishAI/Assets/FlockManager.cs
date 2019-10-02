@@ -27,7 +27,7 @@ public class FlockManager : MonoBehaviour
                 Random.Range(-swimLimits.y, swimLimits.y),
                 Random.Range(-swimLimits.z, swimLimits.z));
             allFish[i] = (GameObject)Instantiate(fishPrefab, pos, Quaternion.identity);
-            //allFish[i].GetComponent<Flock>().myManager = this;
+            allFish[i].GetComponent<Flock>().myManager = this;
         }
     }
     // Update is called once per frame
