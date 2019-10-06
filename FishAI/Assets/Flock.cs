@@ -7,6 +7,7 @@ public class Flock : MonoBehaviour
     public FlockManager myManager;
     public float speed = 0.001f;
     public float rotationSpeed = 4.0f;
+    float neighbourDistance = 3.0f;
     Vector3 averageHeading;
     Vector3 averagePosition;
 
@@ -15,7 +16,7 @@ public class Flock : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        speed = Random.Range(myManager.minSpeed, myManager.maxSpeed);
+        speed = Random.Range(0.5f, 1);
     }
 
     // Update is called once per frame
@@ -69,7 +70,7 @@ public class Flock : MonoBehaviour
             if (go != this.gameObject)
             {
                 dist = Vector3.Distance(go.transform.position, this.transform.position);
-                if (dist <= myManager.neighbourDistance)
+                if (dist <= neighbourDistance)
                 {
                     vcentre += go.transform.position;
                     groupSize++;
@@ -96,7 +97,7 @@ public class Flock : MonoBehaviour
             if (direction != Vector3.zero)
                 transform.rotation = Quaternion.Slerp(transform.rotation,
                                                       Quaternion.LookRotation(direction),
-                                                      myManager.rotationSpeed * Time.deltaTime);
+                                                      rotationSpeed * Time.deltaTime);
         }
 
     }

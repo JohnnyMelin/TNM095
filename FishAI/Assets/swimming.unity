@@ -153,10 +153,6 @@ MonoBehaviour:
   fishPrefab: {fileID: 1013953103146557617, guid: 88bd862a69851864580a284ef07a0675,
     type: 3}
   goalPrefab: {fileID: 417574146}
-  minSpeed: 0.98
-  maxSpeed: 1.79
-  neighbourDistance: 3
-  rotationSpeed: 2.03
 --- !u!4 &314534731
 Transform:
   m_ObjectHideFlags: 0
@@ -184,7 +180,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myManager: {fileID: 314534730}
-  speed: 0
+  speed: 4
   rotationSpeed: 4
 --- !u!1 &417574146
 GameObject:
