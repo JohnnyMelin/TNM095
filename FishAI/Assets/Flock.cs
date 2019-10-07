@@ -11,12 +11,18 @@ public class Flock : MonoBehaviour
     Vector3 averageHeading;
     Vector3 averagePosition;
 
+    public GameObject pred; // Predator
+    float predator_distance; // current distance from fish to predator
+    float flee_distance = 0.00000001f; // distance to predator where we have a response
+
     bool turning = false;
+    bool fleeing = false;
 
     // Start is called before the first frame update
     void Start()
     {
         speed = Random.Range(0.5f, 1);
+        //pred.transform.position = Vector3(-FlockManager.tankSize, -FlockManager.tankSize, -FlockManager.tankSize);
     }
 
     // Update is called once per frame
@@ -33,7 +39,26 @@ public class Flock : MonoBehaviour
             turning = false;
         }
 
-        if(turning)
+        // Avoid preadator
+        if (Vector3.Distance(transform.position, pred.transform.position) >= predator_distance)
+        {
+            fleeing = true;
+        }
+        else
+        {
+            fleeing = false;
+        }
+
+        if(fleeing)
+        {
+            Vector3 direction = (transform.position - pred.transform.position);
+            transform.rotation = Quaternion.Slerp(transform.rotation,
+                                                  Quaternion.LookRotation(direction),
+                                                  rotationSpeed * Time.deltaTime);
+            speed = Random.Range(0.5f, 1) + (flee_distance / Vector3.Distance(transform.position, pred.transform.position));
+        }
+
+        if (turning)
         {
             Vector3 direction = Vector3.zero - transform.position;
             transform.rotation = Quaternion.Slerp(transform.rotation,
@@ -59,6 +84,7 @@ public class Flock : MonoBehaviour
 
         Vector3 vcentre = Vector3.zero; // points to center of the group
         Vector3 vavoid = Vector3.zero;  // points away from potential neighbours
+        
         float gSpeed = 0.1f;    // group speed
 
         Vector3 goalPos = FlockManager.goalPos; //  goal position
@@ -83,7 +109,10 @@ public class Flock : MonoBehaviour
                     Flock anotherFlock = go.GetComponent<Flock>();
                     gSpeed += anotherFlock.speed;
                 }
-            }            
+
+              
+            }    
+
         }
 
         if (groupSize > 0)
