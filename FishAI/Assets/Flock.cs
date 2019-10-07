@@ -6,7 +6,7 @@ public class Flock : MonoBehaviour
 {
     public FlockManager myManager;
     public float speed = 0.001f;
-    public float rotationSpeed = 4.0f;
+    public float rotationSpeed = 2.0f;
     float neighbourDistance = 3.0f;
     Vector3 averageHeading;
     Vector3 averagePosition;
@@ -24,7 +24,7 @@ public class Flock : MonoBehaviour
     {
         // testing the distance between the position of the fish and the center of the tank
         // and if its greater than the tank size the fish goes towards the center of the tank.
-        if(Vector3.Distance(transform.position, Vector3.zero) >= FlockManager.tankSize)
+        if(Vector3.Distance(transform.position, Vector3.zero) >= (FlockManager.tankSize + Random.Range(0.0f,FlockManager.tankSize/3)))
         {
             turning = true;
         }

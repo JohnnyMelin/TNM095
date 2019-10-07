@@ -8,7 +8,7 @@ public class FlockManager : MonoBehaviour
     public GameObject goalPrefab;
     public static int tankSize = 5;
 
-    public static int numFish = 10;
+    public static int numFish = 100;
     public static GameObject[] allFish = new GameObject[numFish];
 
     public static Vector3 goalPos = Vector3.zero;
@@ -28,7 +28,7 @@ public class FlockManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Random.Range(0,10000) < 50)
+        if(Random.Range(0,10000) < 30)
         {
             goalPos = new Vector3(Random.Range(-tankSize, tankSize),
                                   Random.Range(-tankSize, tankSize),
