@@ -34,22 +34,24 @@ public class Flock : MonoBehaviour
         if(Vector3.Distance(transform.position, Vector3.zero) >= (FlockManager.tankSize + Random.Range(0.0f,FlockManager.tankSize/3)))
         {
             turning = true;
-            rotationSpeed = 10.0f;
+            
         }
         else
         {
             turning = false;
-            rotationSpeed = 2.0f;
+            
         }
 
         // Avoid preadator condition
         if (Vector3.Distance(transform.position, pred.transform.position) <= flee_distance) // if fish is close enough to predator flee
         {
             fleeing = true;
+            rotationSpeed = 5.0f;
         }
         else
         {
             fleeing = false;
+            rotationSpeed = 2.0f;
         }
 
 
