@@ -7,13 +7,14 @@ public class Flock : MonoBehaviour
     public FlockManager myManager;
     public float speed = 0.001f;
     public float rotationSpeed = 2.0f;
+    public float distanceTest;
     float neighbourDistance = 3.0f;
     Vector3 averageHeading;
     Vector3 averagePosition;
 
     public GameObject pred; // Predator
     float predator_distance; // current distance from fish to predator
-    float flee_distance = 0.00000001f; // distance to predator where we have a response
+    float flee_distance = 3.0f; // distance to predator where we have a response
 
     bool turning = false;
     bool fleeing = false;
@@ -33,14 +34,16 @@ public class Flock : MonoBehaviour
         if(Vector3.Distance(transform.position, Vector3.zero) >= (FlockManager.tankSize + Random.Range(0.0f,FlockManager.tankSize/3)))
         {
             turning = true;
+            rotationSpeed = 10.0f;
         }
         else
         {
             turning = false;
+            rotationSpeed = 2.0f;
         }
 
-        // Avoid preadator
-        if (Vector3.Distance(transform.position, pred.transform.position) >= predator_distance)
+        // Avoid preadator condition
+        if (Vector3.Distance(transform.position, pred.transform.position) <= flee_distance) // if fish is close enough to predator flee
         {
             fleeing = true;
         }
@@ -49,15 +52,16 @@ public class Flock : MonoBehaviour
             fleeing = false;
         }
 
-        if(fleeing)
+
+        if (fleeing)
         {
+            Debug.Log("Inside");
             Vector3 direction = (transform.position - pred.transform.position);
             transform.rotation = Quaternion.Slerp(transform.rotation,
                                                   Quaternion.LookRotation(direction),
                                                   rotationSpeed * Time.deltaTime);
-            speed = Random.Range(0.5f, 1) + (flee_distance / Vector3.Distance(transform.position, pred.transform.position));
+            speed = Random.Range(0.5f, 1) + 10.0f;// (flee_distance / Vector3.Distance(transform.position, pred.transform.position));
         }
-
         if (turning)
         {
             Vector3 direction = Vector3.zero - transform.position;
@@ -77,6 +81,12 @@ public class Flock : MonoBehaviour
         transform.Translate(0, 0, Time.deltaTime * speed);
     }
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(pred.transform.position, flee_distance);
+    }
+
     void ApplyRules()
     {
         GameObject[] gos;
@@ -94,7 +104,7 @@ public class Flock : MonoBehaviour
         foreach (GameObject go in gos)
         {
             if (go != this.gameObject)
-            {
+            { 
                 dist = Vector3.Distance(go.transform.position, this.transform.position);
                 if (dist <= neighbourDistance)
                 {
@@ -110,7 +120,6 @@ public class Flock : MonoBehaviour
                     gSpeed += anotherFlock.speed;
                 }
 
-              
             }    
 
         }
