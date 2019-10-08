@@ -14,7 +14,7 @@ public class Flock : MonoBehaviour
 
     public GameObject pred; // Predator
     float predator_distance; // current distance from fish to predator
-    float flee_distance = 3.0f; // distance to predator where we have a response
+    float flee_distance = 2.0f; // distance to predator where we have a response
 
     bool turning = false;
     bool fleeing = false;
@@ -60,8 +60,17 @@ public class Flock : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation,
                                                   Quaternion.LookRotation(direction),
                                                   rotationSpeed * Time.deltaTime);
-            speed = Random.Range(0.5f, 1) + 10.0f;// (flee_distance / Vector3.Distance(transform.position, pred.transform.position));
+            speed = 3f;// (flee_distance / Vector3.Distance(transform.position, pred.transform.position));
         }
+        else
+        {
+            speed = Random.Range(0.5f, 1);
+            if (Random.Range(0, 5) < 1)
+            {
+                ApplyRules();
+            }
+        }
+
         if (turning)
         {
             Vector3 direction = Vector3.zero - transform.position;
