@@ -28,7 +28,7 @@ public class FlockManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Random.Range(0,10000) < 50)
+        if(Random.Range(0,10000) < 40)
         {
             goalPos = new Vector3(Random.Range(-tankSize, tankSize),
                                   Random.Range(-tankSize, tankSize),

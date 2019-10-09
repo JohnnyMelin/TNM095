@@ -7,7 +7,7 @@ public class Flock : MonoBehaviour
     public FlockManager myManager;
     public float speed = 0.001f;
     public float rotationSpeed = 2.0f;
-    public float distanceTest;
+    //public float distanceTest;
     float neighbourDistance = 3.0f;
     Vector3 averageHeading;
     Vector3 averagePosition;
