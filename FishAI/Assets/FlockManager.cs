@@ -4,38 +4,36 @@ using UnityEngine;
 
 public class FlockManager : MonoBehaviour
 {
-   
-
     public GameObject fishPrefab;
-    public int numFish = 20;
-    public GameObject[] allFish;
-    public Vector3 swimLimits = new Vector3(10, 10, 10);
+    public GameObject goalPrefab;
+    public static int tankSize = 5;
 
-    [Header("Fish Settings")]
-    [Range(0.0f, 5.0f)]
-    public float minSpeed;
-    [Range(0.0f, 5.0f)]
-    public float maxSpeed;
-    [Range(1.0f, 10.0f)]
-    public float neighbourDistance;
-    [Range(0.0f, 5.0f)]
-    public float rotationSpeed;
+    public static int numFish = 50;
+    public static GameObject[] allFish = new GameObject[numFish];
+
+    public static Vector3 goalPos = Vector3.zero;
+
+    
     // Use this for initialization
     void Start()
     {
-        allFish = new GameObject[numFish];
         for (int i = 0; i < numFish; i++)
         {
-            Vector3 pos = this.transform.position + new Vector3(Random.Range(-swimLimits.x, swimLimits.x),
-                Random.Range(-swimLimits.y, swimLimits.y),
-                Random.Range(-swimLimits.z, swimLimits.z));
+            Vector3 pos =  new Vector3(Random.Range(-tankSize, tankSize),
+                                       Random.Range(-tankSize, tankSize),
+                                       Random.Range(-tankSize, tankSize));
             allFish[i] = (GameObject)Instantiate(fishPrefab, pos, Quaternion.identity);
-            allFish[i].GetComponent<Flock>().myManager = this;
         }
     }
     // Update is called once per frame
     void Update()
     {
-
+        if(Random.Range(0,10000) < 50)
+        {
+            goalPos = new Vector3(Random.Range(-tankSize, tankSize),
+                                  Random.Range(-tankSize, tankSize),
+                                  Random.Range(-tankSize, tankSize));
+            goalPrefab.transform.position = goalPos;
+        }
     }
 }
