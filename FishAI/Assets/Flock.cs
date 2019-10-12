@@ -7,16 +7,73 @@ public class Flock : MonoBehaviour
     public FlockManager myManager;
     public float speed = 0.001f;
     public float rotationSpeed = 2.0f;
+    float avoidDistance = 1.0f;
     //public float distanceTest;
     float neighbourDistance = 3.0f;
     Vector3 averageHeading;
     Vector3 averagePosition;
-
+    List<GameObject> neighbours;
     public GameObject pred; // Predator
     float predator_distance; // current distance from fish to predator
     float flee_distance = 2.0f; // distance to predator where fish start fleeing 
     bool turning = false;
     bool fleeing = false;
+
+    Vector3 avoidanceMove(List<GameObject> fishes)
+    {
+        if (fishes.Count == 0) return Vector3.zero; // if we have no neighbours add no correction
+
+        Vector3 avoidance = Vector3.zero;
+
+        // summarize and get average position
+        int nAvoid = 0;
+        foreach (GameObject fish in fishes)
+        {
+            if(Vector3.Distance(this.transform.position, fish.transform.position) < avoidDistance)
+            {
+                nAvoid++;
+                avoidance += this.transform.position - fish.transform.position;
+            }
+            
+        }
+        if(nAvoid > 0) avoidance /= nAvoid;
+
+        return avoidance;
+    }
+
+    Vector3 alignmentMove(List<GameObject> fishes)
+    {
+        
+        if (fishes.Count == 0) return this.transform.forward; // if we have no neighbours maintain current heading direction
+
+        Vector3 alignment = Vector3.zero;
+
+        // summarize and get average position
+        foreach (GameObject fish in fishes)
+        {
+            alignment += fish.transform.forward;
+        }
+        alignment /= fishes.Count;
+
+        return alignment;
+    }
+
+    Vector3 cohesionMove(List<GameObject> fishes)
+    {
+        if (fishes.Count == 0) return Vector3.zero; // if we have no neighbours add no correction
+
+        Vector3 cohesion = Vector3.zero;
+
+        // summarize and get average position
+        foreach (GameObject fish in fishes)
+        {
+            cohesion += fish.transform.position;
+        }
+        cohesion /= fishes.Count;
+        //create offset from position
+        cohesion -= this.transform.position;
+        return cohesion;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -104,9 +161,6 @@ public class Flock : MonoBehaviour
         GameObject[] gos;
         gos = FlockManager.allFish;
 
-        Vector3 vcentre = Vector3.zero; // points to center of the group
-        Vector3 vavoid = Vector3.zero;  // points away from potential neighbours
-        
         float gSpeed = 0.1f;    // group speed
 
         Vector3 goalPos = FlockManager.goalPos; //  goal position
@@ -120,35 +174,27 @@ public class Flock : MonoBehaviour
                 dist = Vector3.Distance(go.transform.position, this.transform.position);
                 if (dist <= neighbourDistance)
                 {
-                    vcentre += go.transform.position;
+                    neighbours.Add(go);
                     groupSize++;
-
-                    if (dist < 1.0f)
-                    {
-                        vavoid += (this.transform.position - go.transform.position);
-                    }
-
-                    Flock anotherFlock = go.GetComponent<Flock>();
-                    gSpeed += anotherFlock.speed;
                 }
 
             }    
 
         }
 
-        if (groupSize > 0)
-        {
-            // find the average center if a fish is infuelnced by another fish/group
-            vcentre = vcentre / groupSize + (goalPos - this.transform.position);
-            // speed itself  of the fish is set to be the gspeed divided by groupSize
-            speed = gSpeed / groupSize;
+        Vector3 avoid = avoidanceMove(neighbours);
+        Vector3 align = alignmentMove(neighbours);
+        Vector3 cohesion = cohesionMove(neighbours);
 
-            Vector3 direction = (vcentre + vavoid) - transform.position;
-            if (direction != Vector3.zero)
-                transform.rotation = Quaternion.Slerp(transform.rotation,
-                                                      Quaternion.LookRotation(direction),
-                                                      rotationSpeed * Time.deltaTime);
-        }
+        // speed itself  of the fish is set to be the gspeed divided by groupSize
+        speed = gSpeed / groupSize;
+        //Debug.DrawLine(this.transform.position, this.transform.position + avoid);
+        Vector3 direction = (4* cohesion + avoid + align) + Vector3.Normalize(goalPos - this.transform.position);
+        if (direction != Vector3.zero)
+            transform.rotation = Quaternion.Slerp(transform.rotation,
+                                                    Quaternion.LookRotation(direction),
+                                                    rotationSpeed * Time.deltaTime);
+        
 
     }
 }
