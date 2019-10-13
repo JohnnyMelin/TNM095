@@ -7,7 +7,7 @@ public class Flock : MonoBehaviour
     public FlockManager myManager;
     public float speed = 0.001f;
     public float rotationSpeed = 2.0f;
-    float avoidDistance = 1.0f;
+    float avoidDistance = 0.5f;
     //public float distanceTest;
     float neighbourDistance = 3.0f;
     Vector3 averageHeading;
@@ -87,7 +87,7 @@ public class Flock : MonoBehaviour
     {
         // testing the distance between the position of the fish and the center of the tank
         // and if its greater than the tank size the fish goes towards the center of the tank.
-        if(Vector3.Distance(transform.position, Vector3.zero) >= (FlockManager.tankSize + Random.Range(0.0f,FlockManager.tankSize/3)))
+        if (Vector3.Distance(transform.position, Vector3.zero) >= (FlockManager.tankSize + Random.Range(0.0f,FlockManager.tankSize/3)))
         {
             turning = true;
             
@@ -150,7 +150,7 @@ public class Flock : MonoBehaviour
                                                   Quaternion.LookRotation(direction),
                                                   rotationSpeed * Time.deltaTime);
             }
-            this.transform.position = Vector3.zero;
+            //this.transform.position = Vector3.zero;
             speed = Random.Range(0.5f, 1);
         }
         else
@@ -161,7 +161,7 @@ public class Flock : MonoBehaviour
             }
                 
         }
-        Vector3 Velocity = 0.01f * transform.forward;
+        Vector3 Velocity = 0.006f * transform.forward;
         transform.position += Velocity;
     }
 
@@ -231,7 +231,7 @@ public class Flock : MonoBehaviour
         // speed itself  of the fish is set to be the gspeed divided by groupSize
         speed = gSpeed / groupSize;
         //Debug.DrawLine(this.transform.position, this.transform.position + avoid);
-        Vector3 direction = (4*cohesion + avoid + align + goalPos);// + 20*(goalPos - this.transform.position);
+        Vector3 direction = (4 * cohesion + 50 * avoid + align + goalPos);// + 20*(goalPos - this.transform.position);
    
         if (direction != Vector3.zero)
             transform.rotation = Quaternion.Slerp(transform.rotation,
