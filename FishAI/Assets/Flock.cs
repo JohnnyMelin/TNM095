@@ -111,45 +111,45 @@ public class Flock : MonoBehaviour
         }
 
 
-        //if (fleeing)
-        //{
-        //    Debug.Log("Inside");
-        //    Vector3 direction = (transform.position - pred.transform.position);
+        if (fleeing)
+        {
+            Debug.Log("Inside");
+            Vector3 direction = (transform.position - pred.transform.position);
 
-        //    if (direction != Vector3.zero)
-        //    {
-        //        transform.rotation = Quaternion.Slerp(transform.rotation,
-        //                                         Quaternion.LookRotation(direction),
-        //                                         rotationSpeed * Time.deltaTime);
-        //    }
+            if (direction != Vector3.zero)
+            {
+                transform.rotation = Quaternion.Slerp(transform.rotation,
+                                                 Quaternion.LookRotation(direction),
+                                                 rotationSpeed * Time.deltaTime);
+            }
 
-            
-        //    //speed = 6f;
-        //    speed = ((flee_distance*2) / Vector3.Distance(transform.position, pred.transform.position));
 
-        //}
-        //else
-        //{
-        //    //speed = Random.Range(0.5f, 1);
-        //    if (Random.Range(0, 5) < 1)
-        //    {
-        //        ApplyRules();
-        //    }
-        //}
+            //speed = 6f;
+            speed = ((flee_distance * 2) / Vector3.Distance(transform.position, pred.transform.position));
+
+        }
+        else
+        {
+            //speed = Random.Range(0.5f, 1);
+            if (Random.Range(0, 5) < 1)
+            {
+                ApplyRules();
+            }
+        }
 
         if (turning)
         {
 
-            //Vector3 direction = new Vector3(Random.Range(-FlockManager.tankSize, FlockManager.tankSize),
-            //                      Random.Range(-FlockManager.tankSize, FlockManager.tankSize),
-            //                      Random.Range(-FlockManager.tankSize, FlockManager.tankSize));
-            //direction -= this.transform.position;
-            //if (direction != Vector3.zero)
-            //{
-            //    transform.rotation = Quaternion.Slerp(transform.rotation,
-            //                                      Quaternion.LookRotation(direction),
-            //                                      rotationSpeed * Time.deltaTime);
-            //}
+            Vector3 direction = new Vector3(Random.Range(-FlockManager.tankSize, FlockManager.tankSize),
+                                  Random.Range(-FlockManager.tankSize, FlockManager.tankSize),
+                                  Random.Range(-FlockManager.tankSize, FlockManager.tankSize));
+            direction -= this.transform.position;
+            if (direction != Vector3.zero)
+            {
+                transform.rotation = Quaternion.Slerp(transform.rotation,
+                                                  Quaternion.LookRotation(direction),
+                                                  rotationSpeed * Time.deltaTime);
+            }
             this.transform.position = Vector3.zero;
             speed = Random.Range(0.5f, 1);
         }
@@ -161,17 +161,14 @@ public class Flock : MonoBehaviour
             }
                 
         }
-        Vector3 Velocity = new Vector3(0, 0, Time.deltaTime * speed);
+        Vector3 Velocity = 0.01f * transform.forward;
         transform.position += Velocity;
-        //transform.Translate(0, 0, Time.deltaTime * speed);
-        
-
     }
 
     private void OnDrawGizmos()
     {
-        //Gizmos.color = Color.red;
-        //Gizmos.DrawWireSphere(pred.transform.position, flee_distance);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(pred.transform.position, flee_distance);
     }
 
     void ApplyRules()
@@ -234,7 +231,7 @@ public class Flock : MonoBehaviour
         // speed itself  of the fish is set to be the gspeed divided by groupSize
         speed = gSpeed / groupSize;
         //Debug.DrawLine(this.transform.position, this.transform.position + avoid);
-        Vector3 direction = (4*cohesion + avoid + align) - this.transform.position;// + 20*(goalPos - this.transform.position);
+        Vector3 direction = (4*cohesion + avoid + align + goalPos);// + 20*(goalPos - this.transform.position);
    
         if (direction != Vector3.zero)
             transform.rotation = Quaternion.Slerp(transform.rotation,
