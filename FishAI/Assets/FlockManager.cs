@@ -22,6 +22,7 @@ public class FlockManager : MonoBehaviour
             Vector3 pos =  new Vector3(Random.Range(-tankSize, tankSize),
                                        Random.Range(-tankSize, tankSize),
                                        Random.Range(-tankSize, tankSize));
+
             allFish[i] = (GameObject)Instantiate(fishPrefab, pos, Quaternion.identity);
         }
     }

@@ -141,14 +141,14 @@ public class Flock : MonoBehaviour
         {
 
             Vector3 direction = new Vector3(Random.Range(-FlockManager.tankSize, FlockManager.tankSize),
-                                  Random.Range(-FlockManager.tankSize, FlockManager.tankSize),
-                                  Random.Range(-FlockManager.tankSize, FlockManager.tankSize));
+                                                         Random.Range(-FlockManager.tankSize, FlockManager.tankSize),
+                                                         Random.Range(-FlockManager.tankSize, FlockManager.tankSize));
             direction -= this.transform.position;
             if (direction != Vector3.zero)
             {
                 transform.rotation = Quaternion.Slerp(transform.rotation,
-                                                  Quaternion.LookRotation(direction),
-                                                  rotationSpeed * Time.deltaTime);
+                                                      Quaternion.LookRotation(direction),
+                                                      rotationSpeed * Time.deltaTime);
             }
             //this.transform.position = Vector3.zero;
             speed = Random.Range(0.5f, 1);
@@ -169,6 +169,8 @@ public class Flock : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(pred.transform.position, flee_distance);
+        //Gizmos.DrawWireCube(myManager.transform.position, new Vector3(FlockManager.tankSize, FlockManager.tankSize, FlockManager.tankSize));
+        Gizmos.DrawWireSphere(Vector3.zero, (FlockManager.tankSize + FlockManager.tankSize/3));
     }
 
     void ApplyRules()
