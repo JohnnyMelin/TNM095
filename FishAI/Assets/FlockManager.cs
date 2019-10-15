@@ -8,7 +8,7 @@ public class FlockManager : MonoBehaviour
     public GameObject goalPrefab;
     public static int tankSize = 5;
 
-    public static int numFish = 30;
+    public static int numFish = 50;
     public static GameObject[] allFish = new GameObject[numFish];
 
     public static Vector3 goalPos = Vector3.zero;

@@ -161,7 +161,7 @@ public class Flock : MonoBehaviour
             }
                 
         }
-        Vector3 Velocity = 0.006f * transform.forward;
+        Vector3 Velocity = 0.02f * transform.forward;
         transform.position += Velocity;
     }
 
