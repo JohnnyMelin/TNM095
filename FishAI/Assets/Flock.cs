@@ -7,6 +7,7 @@ public class Flock : MonoBehaviour
     public FlockManager myManager;
     public float speed = 0.001f;
     public float rotationSpeed = 2.0f;
+    public float trueSpeed = 0.015f;
     float avoidDistance = 0.5f;
     //public float distanceTest;
     float neighbourDistance = 3.0f;
@@ -15,7 +16,7 @@ public class Flock : MonoBehaviour
     //List<GameObject> neighbours;
     public GameObject pred; // Predator
     float predator_distance; // current distance from fish to predator
-    float flee_distance = 2.0f; // distance to predator where fish start fleeing 
+    float flee_distance = 3.0f; // distance to predator where fish start fleeing 
     bool turning = false;
     bool fleeing = false;
 
@@ -34,7 +35,7 @@ public class Flock : MonoBehaviour
     //            nAvoid++;
     //            avoidance += this.transform.position - fish.transform.position;
     //        }
-            
+
     //    }
     //    if(nAvoid > 0) avoidance /= nAvoid;
 
@@ -43,7 +44,7 @@ public class Flock : MonoBehaviour
 
     //Vector3 alignmentMove(List<GameObject> fishes)
     //{
-        
+
     //    if (fishes.Count == 0) return this.transform.forward; // if we have no neighbours maintain current heading direction
 
     //    Vector3 alignment = Vector3.zero;
@@ -119,13 +120,13 @@ public class Flock : MonoBehaviour
             if (direction != Vector3.zero)
             {
                 transform.rotation = Quaternion.Slerp(transform.rotation,
-                                                 Quaternion.LookRotation(direction),
-                                                 rotationSpeed * Time.deltaTime);
+                                                      Quaternion.LookRotation(direction),
+                                                      rotationSpeed * Time.deltaTime);
             }
 
 
             //speed = 6f;
-            speed = ((flee_distance * 2) / Vector3.Distance(transform.position, pred.transform.position));
+            speed = (this.transform.forward * trueSpeed).magnitude *  ((flee_distance * 2) / Vector3.Distance(transform.position, pred.transform.position));
 
         }
         else
@@ -161,7 +162,7 @@ public class Flock : MonoBehaviour
             }
                 
         }
-        Vector3 Velocity = 0.015f * transform.forward;
+        Vector3 Velocity = trueSpeed * transform.forward;
         transform.position += Velocity;
     }
 
@@ -233,7 +234,7 @@ public class Flock : MonoBehaviour
         // speed itself  of the fish is set to be the gspeed divided by groupSize
         speed = gSpeed / groupSize;
         //Debug.DrawLine(this.transform.position, this.transform.position + avoid);
-        Vector3 direction = (4 * cohesion + 50 * avoid + align + goalPos);// + 20*(goalPos - this.transform.position);
+        Vector3 direction = (4 * cohesion + 200 * avoid + align + 2*goalPos);// + 20*(goalPos - this.transform.position);
    
         if (direction != Vector3.zero)
             transform.rotation = Quaternion.Slerp(transform.rotation,
