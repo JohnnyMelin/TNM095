@@ -8,15 +8,22 @@ public class Flock : MonoBehaviour
     public float speed = 0.001f;
     public float rotationSpeed = 2.0f;
     public float trueSpeed = 0.015f;
+    public float cohesionWeight = 4f;
+    public float alignmentWeight = 1f;
+    public float goalposWeight = 2f;
+    public float avoidWeight = 200f;
+
+    public GameObject pred; // Predator
+
     float avoidDistance = 0.5f;
-    //public float distanceTest;
     float neighbourDistance = 3.0f;
+    float predator_distance; // current distance from fish to predator
+    float flee_distance = 2.0f; // distance to predator where fish start fleeing
+
     Vector3 averageHeading;
     Vector3 averagePosition;
     //List<GameObject> neighbours;
-    public GameObject pred; // Predator
-    float predator_distance; // current distance from fish to predator
-    float flee_distance = 3.0f; // distance to predator where fish start fleeing 
+    
     bool turning = false;
     bool fleeing = false;
 
@@ -126,7 +133,7 @@ public class Flock : MonoBehaviour
 
 
             //speed = 6f;
-            speed = (this.transform.forward * trueSpeed).magnitude *  ((flee_distance * 2) / Vector3.Distance(transform.position, pred.transform.position));
+            speed = (this.transform.forward * trueSpeed).magnitude +  ((flee_distance * (this.transform.forward * trueSpeed).magnitude) / Vector3.Distance(transform.position, pred.transform.position));
 
         }
         else
@@ -234,7 +241,7 @@ public class Flock : MonoBehaviour
         // speed itself  of the fish is set to be the gspeed divided by groupSize
         speed = gSpeed / groupSize;
         //Debug.DrawLine(this.transform.position, this.transform.position + avoid);
-        Vector3 direction = (4 * cohesion + 200 * avoid + align + 2*goalPos);// + 20*(goalPos - this.transform.position);
+        Vector3 direction = (cohesionWeight * cohesion + avoidWeight * avoid + alignmentWeight * align + goalposWeight*goalPos);// + 20*(goalPos - this.transform.position);
    
         if (direction != Vector3.zero)
             transform.rotation = Quaternion.Slerp(transform.rotation,
