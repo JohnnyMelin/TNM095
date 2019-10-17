@@ -5,18 +5,19 @@ using UnityEngine;
 public class Flock : MonoBehaviour
 {
     public FlockManager myManager;
-    public float speed = 0.001f;
-    public float rotationSpeed = 2.0f;
     public float trueSpeed = 0.015f;
+    public float speed = 0.001f;
+    public float rotationSpeed = 200.0f;
     public float cohesionWeight = 4f;
     public float alignmentWeight = 1f;
     public float goalposWeight = 2f;
     public float avoidWeight = 200f;
+    public float fishFov = 270;
 
     public GameObject pred; // Predator
 
     float avoidDistance = 0.5f;
-    float neighbourDistance = 3.0f;
+    float neighbourDistance = 3.0f; // was 3 
     float predator_distance; // current distance from fish to predator
     float flee_distance = 2.0f; // distance to predator where fish start fleeing
 
@@ -83,6 +84,22 @@ public class Flock : MonoBehaviour
     //    return cohesion;
     //}
 
+    bool withinFov(Vector3 direction, Vector3 target)
+    {
+
+
+        if (Vector3.Angle(direction, target) <= fishFov / 2)
+        {
+            //Debug.Log("Inside");
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+        
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -121,7 +138,6 @@ public class Flock : MonoBehaviour
 
         if (fleeing)
         {
-            Debug.Log("Inside");
             Vector3 direction = (transform.position - pred.transform.position);
 
             if (direction != Vector3.zero)
@@ -202,27 +218,32 @@ public class Flock : MonoBehaviour
                 dist = Vector3.Distance(go.transform.position, this.transform.position);
                 if (dist <= neighbourDistance)
                 {
-                    //neighbours.Add(go);
-                    groupSize++;
-
-                    // ==================   AVOIDANCE =======================================
-                    // ======================================================================
-                    if (dist < avoidDistance)
+                    if (withinFov(this.transform.forward, go.transform.position - this.transform.position))
                     {
-                        nAvoid++;
-                        avoid += this.transform.position - go.transform.position;
+                        
+                        //Debug.DrawLine(this.transform.position, go.transform.position, Color.green);
+                        //neighbours.Add(go);
+                        groupSize++;
+
+                        // ==================   AVOIDANCE =======================================
+                        // ======================================================================
+                        //if (dist <= avoidDistance)
+                        //{
+                            nAvoid++;
+                            avoid += this.transform.position - go.transform.position;
+                        //}
+                        // ======================================================================
+
+
+                        // ==================   ALIGNMENT =======================================
+                        // ======================================================================
+                        align += go.transform.forward;
+                        // ======================================================================
+
+                        // ==================   COHESION ========================================
+                        // ======================================================================
+                        cohesion += go.transform.position;
                     }
-                    // ======================================================================
-
-
-                    // ==================   ALIGNMENT =======================================
-                    // ======================================================================
-                    align += go.transform.forward;
-                    // ======================================================================
-                    
-                    // ==================   COHESION ========================================
-                    // ======================================================================
-                    cohesion += go.transform.position;
                 }
 
             }    
@@ -240,6 +261,7 @@ public class Flock : MonoBehaviour
 
         // speed itself  of the fish is set to be the gspeed divided by groupSize
         speed = gSpeed / groupSize;
+        //trueSpeed = gSpeed / groupSize;
         //Debug.DrawLine(this.transform.position, this.transform.position + avoid);
         Vector3 direction = (cohesionWeight * cohesion + avoidWeight * avoid + alignmentWeight * align + goalposWeight*goalPos);// + 20*(goalPos - this.transform.position);
    
