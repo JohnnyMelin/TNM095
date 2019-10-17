@@ -15,5 +15,6 @@ public class followparent : MonoBehaviour
     void Update()
     {
         this.transform.position = parent.transform.position;
+        this.transform.rotation = parent.transform.rotation;
     }
 }
