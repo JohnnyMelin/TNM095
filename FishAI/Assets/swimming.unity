@@ -221,6 +221,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!114 &26401394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 26401392}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9e2776e44b28e848b9bdb3667bfc926, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  predSpeed: 0.05
 --- !u!4 &61104984 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 84376f2a0948947b5a6dfe814a1100a0,
@@ -360,8 +373,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aae422fd49f8b29418cb959737aa5521, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   fishPrefab: {fileID: 1837396291}
   goalPrefab: {fileID: 417574146}
 --- !u!4 &314534731
@@ -388,16 +401,17 @@ MonoBehaviour:
   m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0cd1332eb73393046959d0b0245356f6, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   myManager: {fileID: 314534730}
+  trueSpeed: 0.015
   speed: 4
   rotationSpeed: 4
-  trueSpeed: 0.015
   cohesionWeight: 4
   alignmentWeight: 1
   goalposWeight: 2
   avoidWeight: 200
+  fishFov: 270
   pred: {fileID: 26401392}
 --- !u!1001 &356270241
 PrefabInstance:
@@ -836,8 +850,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d9904cb2edbc784b87f4114d5481a72, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   parent: {fileID: 26401392}
 --- !u!1 &843642518
 GameObject:
@@ -1940,8 +1954,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0d61894aa3528834abf858aed48b37a5, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   mt: {fileID: 0}
 --- !u!1 &1463084820
 GameObject:
@@ -2237,16 +2251,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0cd1332eb73393046959d0b0245356f6, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   myManager: {fileID: 0}
+  trueSpeed: 0.015
   speed: 0.001
   rotationSpeed: 2
-  trueSpeed: 0.015
-  cohesionWeight: 4
+  cohesionWeight: 1
   alignmentWeight: 1
-  goalposWeight: 2
-  avoidWeight: 200
+  goalposWeight: 1
+  avoidWeight: 1
+  fishFov: 360
   pred: {fileID: 26401392}
 --- !u!4 &1837396293
 Transform:
