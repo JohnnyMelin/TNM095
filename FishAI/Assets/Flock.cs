@@ -17,7 +17,7 @@ public class Flock : MonoBehaviour
     public GameObject pred; // Predator
 
     float avoidDistance = 0.5f;
-    float neighbourDistance = 3.0f; // was 3 
+    float neighbourDistance = 1.0f; // was 3 
     float predator_distance; // current distance from fish to predator
     float flee_distance = 2.0f; // distance to predator where fish start fleeing
 
@@ -210,11 +210,15 @@ public class Flock : MonoBehaviour
 
         float dist;
         int groupSize = 0;
+        var b = new Bounds(transform.position, Vector3.one * neighbourDistance * 2);
         foreach (GameObject go in gos)
         {
             if (go != this.gameObject)
-            { 
+            {
                 
+                if (!b.Contains(go.transform.position))
+                    continue;
+
                 dist = Vector3.Distance(go.transform.position, this.transform.position);
                 if (dist <= neighbourDistance)
                 {
